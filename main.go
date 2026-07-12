@@ -2,21 +2,31 @@ package main
 
 import (
 	"fmt"
+	"os"
 
-	"github.com/thalesraymond/gator/internal/config"
+	"github.com/thalesraymond/gator/cmd"
 )
 
 func main() {
-	fmt.Println("Hello World")
-
-	cfg, err := config.ReadConfig()
+	state, err := cmd.NewState()
 
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	cfg.SetUser("thales")
+	commands := cmd.Commands{}
+	commands.Register("login", cmd.HandleLogin)
 
-	fmt.Println(cfg)
+	cliCmd := cmd.CliCommand{
+		Name: "login",
+		Args: os.Args[1:],
+	}
+
+	error := commands.RunCommand(state, cliCmd)
+
+	if error != nil {
+		fmt.Println(error)
+		os.Exit(1)
+	}
 }
