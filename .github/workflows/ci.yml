@@ -28,7 +28,7 @@ jobs:
         run: go mod verify
 
       - name: Build
-        run: go build -v -o bin/pokedexcli ./
+        run: go build -v -o bin/gator ./
 
       - name: Test with Race Detector
         run: go test -v -race -cover ./...
@@ -42,5 +42,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: web-crawler-binary
+          name: gator
           path: bin/
