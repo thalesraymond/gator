@@ -20,6 +20,7 @@ func main() {
 	commands := cmd.Commands{}
 	commands.Register("login", cmd.HandleLogin)
 	commands.Register("register", cmd.HandleRegister)
+	commands.Register("reset", cmd.HandleReset)
 
 	if len(os.Args) < 2 {
 		return
