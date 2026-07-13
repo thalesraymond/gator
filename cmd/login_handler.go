@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"errors"
 	"fmt"
 )
@@ -12,7 +13,13 @@ func HandleLogin(state *state, cmd CliCommand) error {
 
 	username := cmd.Args[1]
 
-	if err := state.Config.SetUser(username); err != nil {
+	user, err := state.DatabaseQueries.GetUserByName(context.Background(), username)
+
+	if err != nil {
+		return err
+	}
+
+	if err := state.Config.SetUser(user.Name); err != nil {
 		return err
 	}
 

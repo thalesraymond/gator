@@ -5,6 +5,8 @@ import (
 	"os"
 
 	"github.com/thalesraymond/gator/cmd"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -17,16 +19,21 @@ func main() {
 
 	commands := cmd.Commands{}
 	commands.Register("login", cmd.HandleLogin)
+	commands.Register("register", cmd.HandleRegister)
+
+	if len(os.Args) < 2 {
+		return
+	}
 
 	cliCmd := cmd.CliCommand{
-		Name: "login",
+		Name: os.Args[1],
 		Args: os.Args[1:],
 	}
 
-	error := commands.RunCommand(state, cliCmd)
+	err = commands.RunCommand(state, cliCmd)
 
-	if error != nil {
-		fmt.Println(error)
+	if err != nil {
+		fmt.Println(err)
 		os.Exit(1)
 	}
 }
