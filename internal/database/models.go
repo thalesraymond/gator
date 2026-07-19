@@ -17,3 +17,5 @@ type User struct {
 	CreatedAt time.Time
 	UpdatedAt sql.NullTime
 }
+
+

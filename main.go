@@ -22,6 +22,7 @@ func main() {
 	commands.Register("register", cmd.HandleRegister)
 	commands.Register("reset", cmd.HandleReset)
 	commands.Register("users", cmd.HandleUsers)
+	commands.Register("agg", cmd.HandleAggregator)
 
 	if len(os.Args) < 2 {
 		return
