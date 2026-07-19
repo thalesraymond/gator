@@ -23,6 +23,10 @@ type RSSItem struct {
 	PubDate     string `xml:"pubDate"`
 }
 
+func NewRSSFeed() *RSSFeed {
+	return &RSSFeed{}
+}
+
 func FetchFeed(ctx context.Context, feedURL string) (*RSSFeed, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", feedURL, nil)
 

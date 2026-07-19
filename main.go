@@ -23,6 +23,7 @@ func main() {
 	commands.Register("reset", cmd.HandleReset)
 	commands.Register("users", cmd.HandleUsers)
 	commands.Register("agg", cmd.HandleAggregator)
+	commands.Register("addfeed", cmd.HandleAddFeed)
 
 	if len(os.Args) < 2 {
 		return
