@@ -25,6 +25,9 @@ func main() {
 	commands.Register("agg", cmd.HandleAggregator)
 	commands.Register("addfeed", cmd.HandleAddFeed)
 	commands.Register("feeds", cmd.HandlerListFeeds)
+	commands.Register("follow", cmd.HandleFollow)
+	commands.Register("following", cmd.HandleFollowing)
+	
 
 	if len(os.Args) < 2 {
 		return

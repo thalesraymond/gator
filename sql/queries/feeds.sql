@@ -20,3 +20,6 @@ SELECT feeds.id, feeds.name, feeds.url, feeds.user_id, feeds.created_at, feeds.u
 FROM feeds
     INNER JOIN users ON feeds.user_id = users.id
 ORDER BY feeds.created_at DESC;
+
+-- name: GetFeedByURL :one
+SELECT * FROM feeds WHERE url = $1;
