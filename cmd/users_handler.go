@@ -9,7 +9,7 @@ import (
 
 func HandleUsers(state *state, cmd CliCommand) error {
 	if len(cmd.Args) != 1 {
-		return errors.New("Usage: gator users")
+		return errors.New("usage: gator users")
 	}
 
 	users, err := state.DatabaseQueries.GetUsers(context.Background())

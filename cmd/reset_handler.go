@@ -8,7 +8,7 @@ import (
 
 func HandleReset(state *state, cmd CliCommand) error {
 	if len(cmd.Args) != 1 {
-		return errors.New("Usage: gator reset")
+		return errors.New("usage: gator reset")
 	}
 
 	err := state.DatabaseQueries.DeleteAllUsers(context.Background())

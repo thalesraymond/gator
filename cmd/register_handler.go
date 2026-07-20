@@ -13,7 +13,7 @@ import (
 
 func HandleRegister(state *state, cmd CliCommand) error {
 	if len(cmd.Args) != 2 {
-		return errors.New("Usage: gator register <username>")
+		return errors.New("usage: gator register <username>")
 	}
 
 	username := cmd.Args[1]
@@ -27,7 +27,7 @@ func HandleRegister(state *state, cmd CliCommand) error {
 	}
 
 	if user.Name == username {
-		return errors.New("User already exists")
+		return errors.New("user already exists")
 	}
 
 	now := time.Now()

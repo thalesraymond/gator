@@ -12,7 +12,7 @@ import (
 
 func HandleAddFeed(state *state, cmd CliCommand) error {
 	if len(cmd.Args) != 3 {
-		return errors.New("Usage: gator add_feed <name> <url>")
+		return errors.New("usage: gator add_feed <name> <url>")
 	}
 
 	name := cmd.Args[1]

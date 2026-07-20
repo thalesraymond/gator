@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/xml"
 	"html"
+	"log"
 	"net/http"
 )
 
@@ -42,7 +43,11 @@ func FetchFeed(ctx context.Context, feedURL string) (*RSSFeed, error) {
 		return nil, err
 	}
 
-	defer resp.Body.Close()
+	defer func() {
+		if closeErr := resp.Body.Close(); closeErr != nil {
+			log.Printf("failed to close response body: %v", closeErr)
+		}
+	}()
 
 	var feed RSSFeed
 

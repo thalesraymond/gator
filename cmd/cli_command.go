@@ -24,7 +24,7 @@ func (c *Commands) RunCommand(state *state, cmd CliCommand) error {
 
 	handler, ok := c.RegisteredCommands[cmd.Name]
 	if !ok {
-		return fmt.Errorf("Command '%s' not found", cmd.Name)
+		return fmt.Errorf("command '%s' not found", cmd.Name)
 	}
 	return handler(state, cmd)
 }

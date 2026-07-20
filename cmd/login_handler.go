@@ -8,7 +8,7 @@ import (
 
 func HandleLogin(state *state, cmd CliCommand) error {
 	if len(cmd.Args) != 2 {
-		return errors.New("Usage: gator login <username>")
+		return errors.New("usage: gator login <username>")
 	}
 
 	username := cmd.Args[1]
