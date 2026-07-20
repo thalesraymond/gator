@@ -24,6 +24,7 @@ func main() {
 	commands.Register("users", cmd.HandleUsers)
 	commands.Register("agg", cmd.HandleAggregator)
 	commands.Register("addfeed", cmd.HandleAddFeed)
+	commands.Register("feeds", cmd.HandlerListFeeds)
 
 	if len(os.Args) < 2 {
 		return

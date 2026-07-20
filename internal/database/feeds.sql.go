@@ -14,16 +14,18 @@ import (
 )
 
 const createFeed = `-- name: CreateFeed :one
-INSERT INTO feeds (id, name, url, user_id, created_at, updated_at)
-VALUES (
-    $1,
-    $2,
-    $3,
-    $4,
-    $5,
-    $6
-)
-RETURNING id, name, url, user_id, created_at, updated_at
+INSERT INTO
+    feeds (
+        id,
+        name,
+        url,
+        user_id,
+        created_at,
+        updated_at
+    )
+VALUES ($1, $2, $3, $4, $5, $6)
+RETURNING
+    id, name, url, user_id, created_at, updated_at
 `
 
 type CreateFeedParams struct {
@@ -54,4 +56,86 @@ func (q *Queries) CreateFeed(ctx context.Context, arg CreateFeedParams) (Feed, e
 		&i.UpdatedAt,
 	)
 	return i, err
+}
+
+const listAllFeeds = `-- name: ListAllFeeds :many
+SELECT feeds.id, feeds.name, feeds.url, feeds.user_id, feeds.created_at, feeds.updated_at, users.name AS user_name
+FROM feeds
+    INNER JOIN users ON feeds.user_id = users.id
+ORDER BY feeds.created_at DESC
+`
+
+type ListAllFeedsRow struct {
+	ID        uuid.UUID
+	Name      string
+	Url       string
+	UserID    uuid.UUID
+	CreatedAt time.Time
+	UpdatedAt sql.NullTime
+	UserName  string
+}
+
+func (q *Queries) ListAllFeeds(ctx context.Context) ([]ListAllFeedsRow, error) {
+	rows, err := q.db.QueryContext(ctx, listAllFeeds)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []ListAllFeedsRow
+	for rows.Next() {
+		var i ListAllFeedsRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Url,
+			&i.UserID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.UserName,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listFeedsByUser = `-- name: ListFeedsByUser :many
+SELECT id, name, url, user_id, created_at, updated_at FROM feeds WHERE user_id = $1 ORDER BY created_at DESC
+`
+
+func (q *Queries) ListFeedsByUser(ctx context.Context, userID uuid.UUID) ([]Feed, error) {
+	rows, err := q.db.QueryContext(ctx, listFeedsByUser, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Feed
+	for rows.Next() {
+		var i Feed
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Url,
+			&i.UserID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
