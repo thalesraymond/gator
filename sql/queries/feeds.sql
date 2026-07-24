@@ -23,3 +23,20 @@ ORDER BY feeds.created_at DESC;
 
 -- name: GetFeedByURL :one
 SELECT * FROM feeds WHERE url = $1;
+
+-- name: MarkFeedFetched :exec
+UPDATE feeds
+SET
+    last_fetched_at = $1,
+    updated_at = NOW()
+WHERE
+    id = $2;
+
+-- name: GetNextFeedToFetch :one
+SELECT *
+FROM feeds
+WHERE
+    last_fetched_at IS NULL
+    OR last_fetched_at < NOW() - INTERVAL '1 hour'
+ORDER BY last_fetched_at ASC NULLS FIRST
+LIMIT 1;
