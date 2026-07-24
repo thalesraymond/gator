@@ -5,17 +5,13 @@ import (
 	"errors"
 	"fmt"
 	"time"
+
+	"github.com/thalesraymond/gator/internal/database"
 )
 
-func HandleFollowing(state *state, cmd CliCommand) error {
+func HandleFollowing(state *state, cmd CliCommand, authUser *database.User) error {
 	if len(cmd.Args) != 1 {
 		return errors.New("usage: gator following")
-	}
-
-	authUser, err := state.DatabaseQueries.GetUserByName(context.Background(), state.Config.CurrentUserName)
-
-	if err != nil {
-		return err
 	}
 
 	following, err := state.DatabaseQueries.GetFeedFollowsForUser(context.Background(), authUser.ID)

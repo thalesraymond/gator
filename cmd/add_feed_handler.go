@@ -10,18 +10,13 @@ import (
 	"github.com/thalesraymond/gator/internal/database"
 )
 
-func HandleAddFeed(state *state, cmd CliCommand) error {
+func HandleAddFeed(state *state, cmd CliCommand, authUser *database.User) error {
 	if len(cmd.Args) != 3 {
 		return errors.New("usage: gator add_feed <name> <url>")
 	}
 
 	name := cmd.Args[1]
 	url := cmd.Args[2]
-
-	authUser, err := state.DatabaseQueries.GetUserByName(context.Background(), state.Config.CurrentUserName)
-	if err != nil {
-		return err
-	}
 
 	feedID := uuid.New()
 

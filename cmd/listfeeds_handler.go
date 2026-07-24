@@ -3,9 +3,11 @@ package cmd
 import (
 	"context"
 	"fmt"
+
+	"github.com/thalesraymond/gator/internal/database"
 )
 
-func HandlerListFeeds(state *state, cmd CliCommand) error {
+func HandlerListFeeds(state *state, cmd CliCommand, authUser *database.User) error {
 	feeds, err := state.DatabaseQueries.ListAllFeeds(context.Background())
 
 	if err != nil {

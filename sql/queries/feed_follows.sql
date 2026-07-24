@@ -27,7 +27,6 @@ RETURNING
             users.id = feed_follows.user_id
     ) AS user_name;
 
-
 -- name: GetFeedFollowsForUser :many
 SELECT
     feed_follows.id,
@@ -37,8 +36,12 @@ SELECT
     feed_follows.feed_id,
     feeds.name AS feed_name,
     users.name AS user_name
-FROM feed_follows
-INNER JOIN users ON feed_follows.user_id = users.id
-INNER JOIN feeds ON feed_follows.feed_id = feeds.id
+FROM
+    feed_follows
+    INNER JOIN users ON feed_follows.user_id = users.id
+    INNER JOIN feeds ON feed_follows.feed_id = feeds.id
 WHERE
     feed_follows.user_id = $1;
+
+-- name: DeleteFeedFollow :exec
+DELETE FROM feed_follows WHERE user_id = $1 AND feed_id = $2;
