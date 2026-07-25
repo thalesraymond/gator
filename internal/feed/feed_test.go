@@ -9,14 +9,14 @@ import (
 
 func TestFetchFeedTable(t *testing.T) {
 	tests := []struct {
-		name         string
-		feedURL      string
-		responseBody string
-		expectErr    bool
-		wantTitle    string
-		wantDesc     string
+		name          string
+		feedURL       string
+		responseBody  string
+		expectErr     bool
+		wantTitle     string
+		wantDesc      string
 		wantItemTitle string
-		checkUA      bool
+		checkUA       bool
 	}{
 		{
 			name: "fetches and unescapes feed content",
